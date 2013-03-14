@@ -56,19 +56,33 @@ public class InvocationPlanTest {
         assertThat(plan.getMethod()).isEqualTo(method("getSystem").withParameterTypes().in(ShadowView.class).info());
     }
 
-    @Test public void shouldHandleClassesWithoutShadows() throws Exception {
-        InvocationPlan plan = new InvocationPlan(shadowMap, NoShadow.class, null, "toString", false);
-        assertThat(plan.hasShadowImplementation()).isFalse();
-    }
-
-    public static class NoShadow {
-        public String toString() {
-            return "toString";
-        }
+    @Test public void shouldNeverConsiderMethodsOnObjectToBeShadowMethods() throws Exception {
+        ShadowMap shadowMap = new ShadowMap.Builder()
+                .addShadowClass(View.class, ShadowView.class, false)
+                .addShadowClass(SubView.class, ShadowSubView.class, false)
+                .build();
+        assertThat(new InvocationPlan(shadowMap, View.class, ShadowView.class, "equals", false, Object.class.getName())
+                .hasShadowImplementation()).isFalse();
+        assertThat(new InvocationPlan(shadowMap, View.class, ShadowView.class, "hashCode", false)
+                .hasShadowImplementation()).isFalse();
+        assertThat(new InvocationPlan(shadowMap, View.class, ShadowView.class, "toString", false)
+                .hasShadowImplementation()).isFalse();
     }
 
     public static class View {
         public void show() {
+        }
+
+        @Override public boolean equals(Object obj) {
+            return super.equals(obj);
+        }
+
+        @Override public int hashCode() {
+            return super.hashCode();
+        }
+
+        @Override public String toString() {
+            return super.toString();
         }
 
         public static void getSystem() {

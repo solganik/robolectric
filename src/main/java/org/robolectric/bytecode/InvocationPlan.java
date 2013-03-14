@@ -125,6 +125,8 @@ class InvocationPlan {
 
     private Method findShadowMethodOn(Class<?> shadowClass) {
         Method method = findMethod(shadowClass, methodName, paramClasses);
+        if (method != null && method.getDeclaringClass().equals(Object.class)) return null;
+
         if (shadowConfig != null)
             if (shadowConfig.callThroughByDefault)
                 if (method != null)

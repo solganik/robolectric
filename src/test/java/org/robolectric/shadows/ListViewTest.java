@@ -482,8 +482,8 @@ public class ListViewTest {
     }
 
     private int anyListIndex() {
-		return new Random().nextInt(3);
-	}
+        return new Random().nextInt(3);
+    }
 
     private static class ListAdapter extends BaseAdapter {
         public List<String> items = new ArrayList<String>();
@@ -509,7 +509,7 @@ public class ListViewTest {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            LinearLayout linearLayout = new LinearLayout(null);
+            LinearLayout linearLayout = new LinearLayout(Robolectric.application);
             linearLayout.addView(new View(Robolectric.application));
             return linearLayout;
         }
