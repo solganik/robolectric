@@ -235,6 +235,9 @@ class InvocationPlan {
         }
 
         if (clazz.getName().equals("android.app.PendingIntent")) return false; // todo: grot as we remove some more shadows
+
+
+      // todo: prolly removable now?
         if (methodName.equals("equals") && paramClasses.length == 1 && paramClasses[0] == Object.class) return true;
         if (methodName.equals("hashCode") && paramClasses.length == 0) return true;
         if (methodName.equals("toString") && paramClasses.length == 0) return true;
