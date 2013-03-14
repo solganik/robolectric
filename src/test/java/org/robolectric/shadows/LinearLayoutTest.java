@@ -26,7 +26,7 @@ public class LinearLayoutTest {
 
     @Test
     public void getLayoutParams_shouldReturnLinearLayoutParams() throws Exception {
-        ViewGroup.LayoutParams layoutParams =contextFreeLinearLayout.getLayoutParams();
+        ViewGroup.LayoutParams layoutParams = contextFreeLinearLayout.getLayoutParams();
 
         assertThat(layoutParams).isInstanceOf(LinearLayout.LayoutParams.class);
     }

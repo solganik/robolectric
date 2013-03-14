@@ -82,41 +82,20 @@ public class TestRunners {
         }
     }
 
-    public static class RealApisWithDefaults extends RobolectricTestRunner {
-        public RealApisWithDefaults(Class<?> testClass) throws InitializationError {
-            super(testClass);
-        }
-
-        @Override
-        protected AndroidManifest createAppManifest() {
-            return new AndroidManifest(resourceFile("TestAndroidManifest.xml"), resourceFile("res"), resourceFile("assets"));
-        }
-
-        @Override
-        public Setup createSetup() {
-            return new Setup() {
-                @Override
-                public boolean invokeApiMethodBodiesWhenShadowMethodIsMissing(Class clazz, String methodName, Class<?>[] paramClasses) {
-                    return true;
-                }
-            };
-        }
-    }
-
     public static class RealApisWithoutDefaults extends RobolectricTestRunner {
         public RealApisWithoutDefaults(Class<?> testClass) throws InitializationError {
             super(testClass);
         }
 
-        @Override
-        public Setup createSetup() {
-            return new Setup() {
-                @Override
-                public boolean invokeApiMethodBodiesWhenShadowMethodIsMissing(Class clazz, String methodName, Class<?>[] paramClasses) {
-                    return true;
-                }
-            };
-        }
+//        @Override
+//        public Setup createSetup() {
+//            return new Setup() {
+//                @Override
+//                public boolean invokeApiMethodBodiesWhenShadowMethodIsMissing(Class clazz, String methodName, Class<?>[] paramClasses) {
+//                    return true;
+//                }
+//            };
+//        }
 
         @Override protected ShadowMap createShadowMap() {
             // Don't do any class binding, because that's what we're trying to test here.
