@@ -18,7 +18,7 @@ public class ShadowAbsoluteLayout extends ShadowViewGroup {
     }
 
     @Implements(AbsoluteLayout.LayoutParams.class)
-    public static class ShadowLayoutParams {
+    public static class ShadowLayoutParams extends org.robolectric.shadows.ShadowLayoutParams {
         @RealObject
         AbsoluteLayout.LayoutParams realLayoutParams;
 
@@ -30,7 +30,7 @@ public class ShadowAbsoluteLayout extends ShadowViewGroup {
         }
     }
 
-    @Override
+//    @Override
     @Implementation
     public ViewGroup.LayoutParams generateDefaultLayoutParams() {
         return new AbsoluteLayout.LayoutParams(0, 0, 0, 0);

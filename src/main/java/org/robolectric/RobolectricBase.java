@@ -14,6 +14,7 @@ public class RobolectricBase {
             ShadowAbsSeekBar.class,
             ShadowAbsSpinner.class,
             ShadowAbstractCursor.class,
+            ShadowAccessibilityManager.class,
             ShadowAccount.class,
             ShadowAccountManager.class,
             ShadowActivity.class,

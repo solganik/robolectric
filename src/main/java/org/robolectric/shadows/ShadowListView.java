@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"UnusedDeclaration"})
-@Implements(ListView.class)
+@Implements(value = ListView.class, callThroughByDefault = true)
 public class ShadowListView extends ShadowAbsListView {
     @RealObject private ListView realListView;
 
@@ -24,9 +24,9 @@ public class ShadowListView extends ShadowAbsListView {
     private SparseBooleanArray checkedItemPositions = new SparseBooleanArray();
 
     @Implementation
-    @Override
+//    @Override
     public View findViewById(int id) {
-        View child = super.findViewById(id);
+        View child = realListView.findViewById(id);
         if (child == null) {
             child = findView(headerViews, id);
 
@@ -116,21 +116,6 @@ public class ShadowListView extends ShadowAbsListView {
         addFooterView(footerView, null, false);
     }
 
-    @Implementation
-    public void removeAllViews() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Implementation
-    public void removeView(View view) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Implementation
-    public void removeViewAt(int index) {
-        throw new UnsupportedOperationException();
-    }
-
     private void ensureAdapterNotSet(String view) {
         if (getAdapter() != null) {
             throw new IllegalStateException("Cannot add " + view + " view to list -- setAdapter has already been called");
@@ -160,13 +145,13 @@ public class ShadowListView extends ShadowAbsListView {
     @Override
     protected void addViews() {
         for (View headerView : headerViews) {
-            addView(headerView);
+            realListView.addView(headerView);
         }
 
         super.addViews();
 
         for (View footerView : footerViews) {
-            addView(footerView);
+            realListView.addView(footerView);
         }
     }
 

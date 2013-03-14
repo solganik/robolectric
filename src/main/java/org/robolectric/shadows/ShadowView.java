@@ -29,7 +29,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.robolectric.Robolectric.Reflection.newInstanceOf;
+import static org.robolectric.Robolectric.directlyOn;
 import static org.robolectric.Robolectric.shadowOf;
+import static org.robolectric.bytecode.RobolectricInternals.getConstructor;
 
 /**
  * Shadow implementation of {@code View} that simulates the behavior of this
@@ -39,7 +41,7 @@ import static org.robolectric.Robolectric.shadowOf;
  * visibility, onclick, tags, and tracks the size and shape of the view.
  */
 @SuppressWarnings({"UnusedDeclaration"})
-@Implements(View.class)
+@Implements(value = View.class, callThroughByDefault = true)
 public class ShadowView {
     // This is dumb, we should have a Robolectric-wide way of warning about weird states. todo [xw]
     public static boolean strict = false;
@@ -103,14 +105,23 @@ public class ShadowView {
     private boolean onLayoutWasCalled;
 
     public void __constructor__(Context context) {
+        getConstructor(View.class, realView, Context.class)
+                .invoke(context);
+
         __constructor__(context, null);
     }
 
     public void __constructor__(Context context, AttributeSet attributeSet) {
+        getConstructor(View.class, realView, Context.class, AttributeSet.class)
+                .invoke(context, attributeSet);
+
         __constructor__(context, attributeSet, 0);
     }
 
     public void __constructor__(Context context, AttributeSet attributeSet, int defStyle) {
+        getConstructor(View.class, realView, Context.class, AttributeSet.class, int.class)
+                .invoke(context, attributeSet, defStyle);
+
         this.context = context;
         this.attributeSet = attributeSet;
 
@@ -135,6 +146,7 @@ public class ShadowView {
     @Implementation
     public void setId(int id) {
         this.id = id;
+        directlyOn(realView, View.class).setId(id);
     }
 
     @Implementation
@@ -211,20 +223,20 @@ public class ShadowView {
         return ShadowLayoutInflater.from(context).inflate(resource, root);
     }
 
-    /**
-     * Finds this {@code View} if it's ID is passed in, returns {@code null} otherwise
-     *
-     * @param id the id of the {@code View} to find
-     * @return the {@code View}, if found, {@code null} otherwise
-     */
-    @Implementation
-    public View findViewById(int id) {
-        if (id == this.id) {
-            return realView;
-        }
-
-        return null;
-    }
+//    /**
+//     * Finds this {@code View} if it's ID is passed in, returns {@code null} otherwise
+//     *
+//     * @param id the id of the {@code View} to find
+//     * @return the {@code View}, if found, {@code null} otherwise
+//     */
+//    @Implementation
+//    public View findViewById(int id) {
+//        if (id == this.id) {
+//            return realView;
+//        }
+//
+//        return null;
+//    }
 
     @Implementation
     public View findViewWithTag(Object obj) {
@@ -888,6 +900,7 @@ public class ShadowView {
         Object tag = attributeSet.getAttributeValue("android", "tag");
         if (tag != null) {
             setTag(tag);
+            directlyOn(realView, View.class).setTag(tag);
         }
     }
 
